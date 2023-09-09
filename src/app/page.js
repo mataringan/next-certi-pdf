@@ -10,6 +10,16 @@ import Certificate from "@/components/Certificate";
 const Home = () => {
     const [name, setName] = useState("Jamal");
 
+    const saveBlobToDevice = (blob, fileName) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="bg-blue-300 h-full">
             <h1>Certificate</h1>
@@ -26,11 +36,19 @@ const Home = () => {
             </div>
             <PDFDownloadLink
                 document={<Certificate name={name} />}
-                fileName={`${name} Certificate.pdf`}
+                // fileName="Jamal Certificate.pdf"
             >
-                {({ blob, url, loading, error }) =>
-                    loading ? "Loading document..." : "Download Certificate!"
-                }
+                {({ blob, url, loading, error }) => {
+                    if (loading) {
+                        return "Loading document...";
+                    } else if (error) {
+                        return `Error: ${error}`;
+                    } else if (blob) {
+                        // auto download
+                        saveBlobToDevice(blob, `${name} Certificate.pdf`);
+                        return null;
+                    }
+                }}
             </PDFDownloadLink>
         </div>
     );
