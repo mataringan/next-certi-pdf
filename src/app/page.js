@@ -9,6 +9,7 @@ import Certificate from "@/components/Certificate";
 
 const Home = () => {
     const [name, setName] = useState("Jamal");
+    const [kelas, setKelas] = useState("Javascript");
 
     const saveBlobToDevice = (blob, fileName) => {
         const url = window.URL.createObjectURL(blob);
@@ -22,7 +23,7 @@ const Home = () => {
 
     return (
         <div className="bg-blue-300 h-full">
-            <h1>Certificate</h1>
+            <h1>Certificate G-MOOC 4D</h1>
             {/* <input
                 type="text"
                 placeholder="Name"
@@ -31,11 +32,11 @@ const Home = () => {
             /> */}
             <div style={{ width: "100%", height: "80vh" }}>
                 <PDFViewer width="100%" height="100%">
-                    <Certificate name={name} />
+                    <Certificate name={name} kelas={kelas} />
                 </PDFViewer>
             </div>
             <PDFDownloadLink
-                document={<Certificate name={name} />}
+                document={<Certificate name={name} kelas={kelas} />}
                 // fileName="Jamal Certificate.pdf"
             >
                 {({ blob, url, loading, error }) => {
@@ -45,7 +46,7 @@ const Home = () => {
                         return `Error: ${error}`;
                     } else if (blob) {
                         // auto download
-                        saveBlobToDevice(blob, `${name} Certificate.pdf`);
+                        saveBlobToDevice(blob, `${kelas} Certificate.pdf`);
                         return null;
                     }
                 }}
